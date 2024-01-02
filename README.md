@@ -42,7 +42,7 @@ Upon every deployment (or whenever the Node-RED server is restarted), the API ke
 
 Importing the contents of file [Steady-Example-Flows.json](https://raw.githubusercontent.com/rozek/node-red-flow-steady/master/Steady-Example-Flows.json) will finally give you a few examples which can be used to test your setup and give you an idea of how the output of the Steady flows look like.
 
-You are now ready to use the flows from this repository for your own purposes.
+You are now ready to use the flows from this repository for your own purposes - e.g., for regularly monitoring your subscribers and your expected monthly income.
 
 ## License ##
 
