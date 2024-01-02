@@ -1,0 +1,62 @@
+[
+    {
+        "id": "cef8a1131d6ed86b",
+        "type": "inject",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "at start-up",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "x": 750,
+        "y": 460,
+        "wires": [
+            [
+                "4c7bf9c602410a81"
+            ]
+        ]
+    },
+    {
+        "id": "4c7bf9c602410a81",
+        "type": "reusable",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "configure",
+        "target": "steady:configure",
+        "outputs": 2,
+        "x": 920,
+        "y": 460,
+        "wires": [
+            [
+                "8e87d06a71e8598b"
+            ],
+            [
+                "8e87d06a71e8598b"
+            ]
+        ]
+    },
+    {
+        "id": "8e87d06a71e8598b",
+        "type": "debug",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1070,
+        "y": 460,
+        "wires": []
+    }
+]
