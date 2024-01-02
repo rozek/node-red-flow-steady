@@ -1,0 +1,390 @@
+[
+    {
+        "id": "08302b83b74949e7",
+        "type": "comment",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "Steady",
+        "info": "",
+        "x": 70,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "50e1a5120b3f24c4",
+        "type": "reusable-in",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "configure",
+        "info": "describe your reusable flow here",
+        "scope": "global",
+        "x": 80,
+        "y": 100,
+        "wires": [
+            [
+                "40b45a58d5c7487d"
+            ]
+        ]
+    },
+    {
+        "id": "40b45a58d5c7487d",
+        "type": "function",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "execute",
+        "func": ";(async function () {\n  try {\n    let APIKey = msg.payload\n    if (\n      (typeof APIKey !== 'string') || (APIKey.trim() === '')\n    ) throw new Error('missing or invalid Steady API Key')\n    \n    global.set('Steady-API-Key',APIKey)\n    \n    msg.payload = 'Steady API Key has been set'\n    \n    node.send([msg,null])\n    node.done()\n  } catch (Signal) {\n    msg.statusCode = Signal.StatusCode || 500\n    msg.payload    = Signal.message    || ''\n\n    node.send([null,msg])\n    node.done()\n  }\n})()\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
+            {
+                "var": "axios",
+                "module": "axios"
+            }
+        ],
+        "x": 240,
+        "y": 100,
+        "wires": [
+            [
+                "296c904f3c05b5d8"
+            ],
+            [
+                "4966586716f9b80b"
+            ]
+        ]
+    },
+    {
+        "id": "296c904f3c05b5d8",
+        "type": "reusable-out",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "success",
+        "position": 1,
+        "x": 400,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "4966586716f9b80b",
+        "type": "reusable-out",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "failure",
+        "position": "2",
+        "x": 390,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "2ffd96e011b0ce95",
+        "type": "reusable-in",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "publication",
+        "info": "describe your reusable flow here",
+        "scope": "global",
+        "x": 80,
+        "y": 220,
+        "wires": [
+            [
+                "e0dd47db2792141e"
+            ]
+        ]
+    },
+    {
+        "id": "e0dd47db2792141e",
+        "type": "function",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "execute",
+        "func": "; (async function () {\n  try {\n    let APIKey = global.get('Steady-API-Key')\n    if (\n      (typeof APIKey !== 'string') || (APIKey.trim() === '')\n    ) throw new Error('missing or invalid Steady API Key')\n\n    let Response = await axios.get('https://steadyhq.com/api/v1/publication', {\n      headers: {\n        'Accept': 'application/vnd.api+json',\n        'X-Api-Key': APIKey\n      }\n    })\n\n    if (Response.status !== 200) throw {\n      statusCode: Response.status,\n      message: Response.message || 'error fetching information about a Steady publication'\n    }\n\n    msg.payload = Response.data.data\n\n    node.send([msg, null])\n    node.done()\n  } catch (Signal) {\n    msg.statusCode = Signal.statusCode || 500\n    msg.payload = Signal.message || ''\n\n    node.send([null, msg])\n    node.done()\n  }\n})()\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
+            {
+                "var": "axios",
+                "module": "axios"
+            }
+        ],
+        "x": 240,
+        "y": 220,
+        "wires": [
+            [
+                "dc1414343dfe5fe8"
+            ],
+            [
+                "e0e89247c53ee1aa"
+            ]
+        ]
+    },
+    {
+        "id": "dc1414343dfe5fe8",
+        "type": "reusable-out",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "success",
+        "position": 1,
+        "x": 400,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "e0e89247c53ee1aa",
+        "type": "reusable-out",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "failure",
+        "position": "2",
+        "x": 390,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "9b9b9cc5842c42e1",
+        "type": "reusable-in",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "plans",
+        "info": "describe your reusable flow here",
+        "scope": "global",
+        "x": 70,
+        "y": 340,
+        "wires": [
+            [
+                "4483af0890375d54"
+            ]
+        ]
+    },
+    {
+        "id": "4483af0890375d54",
+        "type": "function",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "execute",
+        "func": ";(async function () {\n  try {\n    let APIKey = global.get('Steady-API-Key')\n    if (\n      (typeof APIKey !== 'string') || (APIKey.trim() === '')\n    ) throw new Error('missing or invalid Steady API Key')\n\n    let Response = await axios.get('https://steadyhq.com/api/v1/plans', {\n      headers: {\n        'Accept':   'application/vnd.api+json',\n        'X-Api-Key':APIKey\n      }\n    })\n\n    if (Response.status !== 200) throw {\n      statusCode:Response.status,\n      message:   Response.message || 'error fetching a list of Steady plans'\n    }\n\n    msg.payload = Response.data.data\n\n    node.send([msg,null])\n    node.done()\n  } catch (Signal) {\n    msg.statusCode = Signal.statusCode || 500\n    msg.payload    = Signal.message    || ''\n\n    node.send([null,msg])\n    node.done()\n  }\n})()\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
+            {
+                "var": "axios",
+                "module": "axios"
+            }
+        ],
+        "x": 220,
+        "y": 340,
+        "wires": [
+            [
+                "7950dc14b383d44a"
+            ],
+            [
+                "1e35f4583ea4dc29"
+            ]
+        ]
+    },
+    {
+        "id": "7950dc14b383d44a",
+        "type": "reusable-out",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "success",
+        "position": 1,
+        "x": 380,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "1e35f4583ea4dc29",
+        "type": "reusable-out",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "failure",
+        "position": "2",
+        "x": 370,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "cc0f04b3feba0627",
+        "type": "reusable-in",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "subscriptions",
+        "info": "describe your reusable flow here",
+        "scope": "global",
+        "x": 90,
+        "y": 460,
+        "wires": [
+            [
+                "d558ef1d9b05ec5f"
+            ]
+        ]
+    },
+    {
+        "id": "d558ef1d9b05ec5f",
+        "type": "function",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "execute",
+        "func": "; (async function () {\n    try {\n        let APIKey = global.get('Steady-API-Key')\n        if (\n            (typeof APIKey !== 'string') || (APIKey.trim() === '')\n        ) throw new Error('missing or invalid Steady API Key')\n\n        let Response = await axios.get('https://steadyhq.com/api/v1/subscriptions', {\n            headers: {\n                'Accept': 'application/vnd.api+json',\n                'X-Api-Key': APIKey\n            }\n        })\n\n        if (Response.status !== 200) throw {\n            statusCode: Response.status,\n            message: Response.message || 'error fetching a list of Steady subscriptions'\n        }\n\n        msg.payload = Response.data.data\n\n        node.send([msg, null])\n        node.done()\n    } catch (Signal) {\n        msg.statusCode = Signal.statusCode || 500\n        msg.payload = Signal.message || ''\n\n        node.send([null, msg])\n        node.done()\n    }\n})()\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
+            {
+                "var": "axios",
+                "module": "axios"
+            }
+        ],
+        "x": 260,
+        "y": 460,
+        "wires": [
+            [
+                "1eb94a5a7622cef3"
+            ],
+            [
+                "dbd626f5f064bb53"
+            ]
+        ]
+    },
+    {
+        "id": "1eb94a5a7622cef3",
+        "type": "reusable-out",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "success",
+        "position": 1,
+        "x": 420,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "dbd626f5f064bb53",
+        "type": "reusable-out",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "failure",
+        "position": "2",
+        "x": 410,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "bca70594702476a8",
+        "type": "reusable-in",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "cancel-subscriptions",
+        "info": "describe your reusable flow here",
+        "scope": "global",
+        "x": 110,
+        "y": 540,
+        "wires": [
+            [
+                "c6c4129454050a3c"
+            ]
+        ]
+    },
+    {
+        "id": "c6c4129454050a3c",
+        "type": "function",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "execute",
+        "func": "; (async function () {\n    try {\n        let APIKey = global.get('Steady-API-Key')\n        if (\n            (typeof APIKey !== 'string') || (APIKey.trim() === '')\n        ) throw new Error('missing or invalid Steady API Key')\n\n        let SubscriptionId = msg.payload\n        if (\n            (typeof SubscriptionId !== 'string') ||\n            !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(SubscriptionId)\n        ) throw new Error('missing or invalid Steady Subscription Id')\n\n        let Response = await axios.post(\n            'https://steadyhq.com/api/v1/subscriptions/' + SubscriptionId + '/cancel',\n            {\n                headers: {\n                    'Accept': 'application/vnd.api+json',\n                    'X-Api-Key': APIKey\n                }\n            })\n\n        switch (Response.status) {\n            case 200: msg.payload = Response.data.data; break\n            case 422: msg.payload = {}; break    // subscription was already cancelled\n            default: throw {\n                statusCode: Response.status,\n                message: Response.message || 'error fetching a list of Steady subscriptions'\n            }\n        }\n\n        node.send([msg, null])\n        node.done()\n    } catch (Signal) {\n        msg.statusCode = Signal.statusCode || 500\n        msg.payload = Signal.message || ''\n\n        node.send([null, msg])\n        node.done()\n    }\n})()\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
+            {
+                "var": "axios",
+                "module": "axios"
+            }
+        ],
+        "x": 300,
+        "y": 540,
+        "wires": [
+            [
+                "de84b146e2583073"
+            ],
+            [
+                "4382cdeef1139513"
+            ]
+        ]
+    },
+    {
+        "id": "de84b146e2583073",
+        "type": "reusable-out",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "success",
+        "position": 1,
+        "x": 460,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "4382cdeef1139513",
+        "type": "reusable-out",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "failure",
+        "position": "2",
+        "x": 450,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "0baaf0b2e31001ef",
+        "type": "reusable-in",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "newsletter-subscribers",
+        "info": "describe your reusable flow here",
+        "scope": "global",
+        "x": 120,
+        "y": 660,
+        "wires": [
+            [
+                "0d73a84ea207b5ab"
+            ]
+        ]
+    },
+    {
+        "id": "0d73a84ea207b5ab",
+        "type": "function",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "execute",
+        "func": "; (async function () {\n    try {\n        let APIKey = global.get('Steady-API-Key')\n        if (\n            (typeof APIKey !== 'string') || (APIKey.trim() === '')\n        ) throw new Error('missing or invalid Steady API Key')\n\n        let Response = await axios.get('https://steadyhq.com/api/v1/newsletter_subscribers', {\n            headers: {\n                'Accept': 'application/vnd.api+json',\n                'X-Api-Key': APIKey\n            }\n        })\n\n        if (Response.status !== 200) throw {\n            statusCode: Response.status,\n            message: Response.message || 'error fetching a list of Steady newsletter subscribers'\n        }\n\n        msg.payload = Response.data.data\n\n        node.send([msg, null])\n        node.done()\n    } catch (Signal) {\n        msg.statusCode = Signal.statusCode || 500\n        msg.payload = Signal.message || ''\n\n        node.send([null, msg])\n        node.done()\n    }\n})()\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
+            {
+                "var": "axios",
+                "module": "axios"
+            }
+        ],
+        "x": 320,
+        "y": 660,
+        "wires": [
+            [
+                "3cdfd1ccda515dbd"
+            ],
+            [
+                "022c448a22317b3f"
+            ]
+        ]
+    },
+    {
+        "id": "3cdfd1ccda515dbd",
+        "type": "reusable-out",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "success",
+        "position": 1,
+        "x": 480,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "022c448a22317b3f",
+        "type": "reusable-out",
+        "z": "4cf5c3a4e2aa7724",
+        "name": "failure",
+        "position": "2",
+        "x": 470,
+        "y": 680,
+        "wires": []
+    }
+]
