@@ -30,12 +30,19 @@ Finally import the contents of file [Steady-Flows.json](https://raw.githubuserco
 
 ![Steady Configuration Flow Screenshot](./Steady-Configuration-Flow.png)
 
+The [Steady REST endpoints](https://developers.steadyhq.com/#rest) require an "API Key" to be sent along with any request. This key can be found in your Steady "Backend" within the "API" section. Keep the key safe and do not publish it.
+
+Now import the contents of file [Steady-Configuration-Flow.json](https://raw.githubusercontent.com/rozek/node-red-flow-steady/master/Steady-Configuration-Flow.json) - either into the same worksheet as before or into a new one. Double click on the node labelled "at start-up" and copy your Steady API key into the "payload" input field.
+
+Upon every deployment (or whenever the Node-RED server is restarted), the API key will now be written into the context of all Steady flow nodes allowing them to access the Steady REST endpoints.
 
 ## Examples ##
 
 ![Steady Example Flows Screenshot](./Steady-Example-Flows.png)
 
+Importing the contents of file [Steady-Example-Flows.json](https://raw.githubusercontent.com/rozek/node-red-flow-steady/master/Steady-Example-Flows.json) will finally give you a few examples which can be used to test your setup and give you an idea of how the output of the Steady flows look like.
 
+You are now ready to use the flows from this repository for your own purposes.
 
 ## License ##
 
